@@ -1,0 +1,60 @@
+[gd_scene load_steps=9 format=3 uid="uid://cxvqmr0gk5h2m"]
+
+[ext_resource type="Script" path="res://main_camera.gd" id="1_1d27x"]
+[ext_resource type="PackedScene" uid="uid://c8gtqegyrncm0" path="res://player.tscn" id="1_gqxie"]
+[ext_resource type="Script" path="res://main.gd" id="1_wm4d5"]
+[ext_resource type="PackedScene" uid="uid://ctb4ehxg8g1fg" path="res://level.tscn" id="4_dsbjt"]
+[ext_resource type="Texture2D" uid="uid://behn4du3h6s0x" path="res://art/misc/pointer.png" id="5_408cc"]
+[ext_resource type="Script" path="res://follow_mouse.gd" id="5_uu4gs"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_2on5k"]
+device = -1
+keycode = 82
+unicode = 114
+
+[sub_resource type="Shortcut" id="Shortcut_rws5y"]
+events = [SubResource("InputEventKey_2on5k")]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_wm4d5")
+
+[node name="MainCamera" type="Camera2D" parent="."]
+zoom = Vector2(5, 5)
+position_smoothing_speed = 10.0
+script = ExtResource("1_1d27x")
+
+[node name="Player" parent="." instance=ExtResource("1_gqxie")]
+process_priority = 1
+position = Vector2(0, -100)
+GROUND_SPEED = 200.0
+AIR_SPEED = 200.0
+JUMP_VELOCITY = 200.0
+AIR_FRICTION = 2.0
+COYOTE_TIME = 0.1
+GRAVITY_MULT = 0.5
+GRAPPLE_STRENGTH = 2000.0
+
+[node name="Level" parent="." instance=ExtResource("4_dsbjt")]
+
+[node name="Button" type="Button" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -986.0
+offset_top = -53.0
+offset_right = -978.0
+offset_bottom = -45.0
+grow_horizontal = 2
+scale = Vector2(1e-05, 1e-05)
+size_flags_horizontal = 6
+size_flags_vertical = 2
+shortcut = SubResource("Shortcut_rws5y")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+texture_filter = 1
+offset_left = -17.0
+offset_top = -17.0
+texture = ExtResource("5_408cc")
+script = ExtResource("5_uu4gs")
+
+[connection signal="pressed" from="Button" to="." method="reset"]
