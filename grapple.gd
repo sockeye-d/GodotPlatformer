@@ -11,21 +11,25 @@ func _ready():
 
 
 func _process(delta: float):
-	if $"..".grapple_state == GrappleState.GRAPPLED:
+	if not $"..".grapple_state == GrappleState.NOT_GRAPPLED:
 		show()
 	else:
 		hide()
 	queue_redraw()
 
 
-func _draw():	
+func _draw():
+	var draw_percentage := 1.0
+	if $"..".grapple_state == GrappleState.ANIMATING_FROM:
+		draw_percentage = $"../GrappleAnimationTimer".time_left / $"../GrappleAnimationTimer".wait_time
+	elif $"..".grapple_state == GrappleState.ANIMATING_TO:
+		draw_percentage = 1 - $"../GrappleAnimationTimer".time_left / $"../GrappleAnimationTimer".wait_time
+	draw_percentage = ease(draw_percentage, 0.2)
 	var origin: Vector2 = ($"../GrappleRaycast").position
-	var end: Vector2 = $"..".grapple_position - ($"..").position
+	var end: Vector2 = origin.lerp(($"..".grapple_position - ($"..").position), draw_percentage)
 	var thickness_function = func (x):
 		return 2 + (1 - (2 * x - 1) ** 2) ** 2 / (-max(1, origin.distance_to(end)*STRETCH))
 	_draw_line(origin, end, thickness_function)
-
-	#width_curve.set_point_value(1, 1 / (max(1, origin.distance_to(end)*STRETCH)))
 
 
 func _draw_line(start: Vector2, end: Vector2, thickness):

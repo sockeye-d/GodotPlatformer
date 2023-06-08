@@ -1,8 +1,7 @@
-[gd_scene load_steps=20 format=3 uid="uid://c8gtqegyrncm0"]
+[gd_scene load_steps=19 format=3 uid="uid://c8gtqegyrncm0"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_cyj8s"]
 [ext_resource type="Script" path="res://grapple_raycast.gd" id="3_jmx57"]
-[ext_resource type="Script" path="res://CollisionShape2D.gd" id="4_ioova"]
 [ext_resource type="Script" path="res://grapple.gd" id="4_jjudc"]
 [ext_resource type="Texture2D" uid="uid://uwt3evyn44di" path="res://art/robot/idle/idle_0000.png" id="5_h87t6"]
 [ext_resource type="Texture2D" uid="uid://cxhhe2xx1u2tm" path="res://art/robot/walk/walk_0000.png" id="5_nv2t0"]
@@ -77,12 +76,20 @@ floor_block_on_wall = false
 floor_snap_length = 0.0
 script = ExtResource("1_cyj8s")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(8, 8.5)
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(8, 8)
 shape = SubResource("RectangleShape2D_5bf04")
-script = ExtResource("4_ioova")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(8, 8)
+shape = SubResource("RectangleShape2D_5bf04")
 
 [node name="GrappleRaycast" type="RayCast2D" parent="."]
+collision_mask = 3
 hit_from_inside = true
 script = ExtResource("3_jmx57")
 
@@ -100,9 +107,16 @@ STRETCH = 0.001
 
 [node name="Visual" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
-position = Vector2(8, 8)
+position = Vector2(8, 7.5)
 sprite_frames = SubResource("SpriteFrames_xbrf4")
 animation = &"walk"
 frame = 5
 frame_progress = 0.16948
 script = ExtResource("17_aeumv")
+metadata/_edit_lock_ = true
+
+[node name="GrappleAnimationTimer" type="Timer" parent="."]
+wait_time = 0.1
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_danger_body_entered"]
+[connection signal="timeout" from="GrappleAnimationTimer" to="." method="_on_grapple_animation_timer_timeout"]

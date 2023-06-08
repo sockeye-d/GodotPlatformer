@@ -11,10 +11,13 @@ extends CharacterBody2D
 @export var GRAPPLE_STRENGTH := 50.0
 @export var VELOCITY_MULTIPLY := 1.0
 @export var SIZE := 16
+@export var MAX_VELOCITY := 1000.0
 
 enum GrappleState {
 	NOT_GRAPPLED,
+	ANIMATING_TO,
 	GRAPPLED,
+	ANIMATING_FROM,
 }
 
 var coyote_time := COYOTE_TIME
@@ -60,23 +63,28 @@ func _physics_process(delta):
 	
 	# Now do grappling hook physics
 	if Input.is_action_just_pressed("grapple") and $GrappleRaycast.is_colliding():
-		grapple_state = GrappleState.GRAPPLED
+		grapple_state = GrappleState.ANIMATING_TO
+		$GrappleAnimationTimer.start()
 		grapple_position = $GrappleRaycast.get_collision_point()
-	elif Input.is_action_just_released("grapple"):
-		grapple_state = GrappleState.NOT_GRAPPLED
-
-
-	var grapple_collision_point = $GrappleRaycast.get_collision_point()
+	elif Input.is_action_just_released("grapple") and not grapple_state == GrappleState.NOT_GRAPPLED:
+		grapple_state = GrappleState.ANIMATING_FROM
+		$GrappleAnimationTimer.start()
 	
-	if abs(grapple_collision_point - grapple_position).length() > 1:
-		if position.distance_squared_to(grapple_collision_point) < position.distance_squared_to(grapple_position):
-			grapple_position = grapple_collision_point
+
+
+	#var grapple_collision_point = $GrappleRaycast.get_collision_point()
+	
+	#if abs(grapple_collision_point - grapple_position).length() > 1:
+	#	if position.distance_squared_to(grapple_collision_point) < position.distance_squared_to(grapple_position):
+	#		grapple_position = grapple_collision_point
 
 	var grapple_direction: Vector2 = ((position + Vector2.ONE*SIZE*0.5) - grapple_position)
 	grapple_direction = grapple_direction.normalized() * min(1.0, grapple_direction.length())
 	
-	if grapple_state == GrappleState.GRAPPLED:
+	if grapple_state == GrappleState.ANIMATING_TO or grapple_state == GrappleState.GRAPPLED:
 		velocity -= grapple_direction * GRAPPLE_STRENGTH * delta
+	
+	velocity = velocity.limit_length(MAX_VELOCITY)
 	
 	velocity *= VELOCITY_MULTIPLY
 	move_and_slide()
@@ -106,5 +114,12 @@ func reset(pos: Vector2):
 
 
 func _on_danger_body_entered(body):
-	reset(Vector2(-25, -25))
+	reset(Vector2(0, -100))
 
+
+
+func _on_grapple_animation_timer_timeout() -> void:
+	if grapple_state == GrappleState.ANIMATING_TO:
+		grapple_state = GrappleState.GRAPPLED
+	elif grapple_state == GrappleState.ANIMATING_FROM:
+		grapple_state = GrappleState.NOT_GRAPPLED

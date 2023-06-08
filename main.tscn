@@ -33,6 +33,7 @@ AIR_FRICTION = 2.0
 COYOTE_TIME = 0.1
 GRAVITY_MULT = 0.5
 GRAPPLE_STRENGTH = 2000.0
+MAX_VELOCITY = 800.0
 
 [node name="Level" parent="." instance=ExtResource("4_dsbjt")]
 
