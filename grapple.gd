@@ -47,7 +47,7 @@ func _draw_line_x(start: Vector2, end: Vector2, thickness):
 			pos.x = start.x + i * PIXEL_SIZE * sign(end.x - start.x)
 			pos.y = snapped(lerp(start.y, end.y, i / loop), PIXEL_SIZE)
 			var thickness_real = thickness.call(i / loop)
-			draw_rect(Rect2(pos, Vector2(PIXEL_SIZE, PIXEL_SIZE) * thickness_real), Color.WHITE)
+			draw_rect(Rect2(pos - Vector2(PIXEL_SIZE, PIXEL_SIZE) * thickness_real * 0.5, Vector2(PIXEL_SIZE, PIXEL_SIZE) * thickness_real), Color.WHITE)
 
 
 func _draw_line_y(start: Vector2, end: Vector2, thickness):
@@ -59,4 +59,4 @@ func _draw_line_y(start: Vector2, end: Vector2, thickness):
 			pos.y = start.x + i * PIXEL_SIZE * sign(end.x - start.x)
 			pos.x = snapped(lerp(start.y, end.y, i / loop), PIXEL_SIZE)
 			var thickness_real = thickness.call(i / loop)
-			draw_rect(Rect2(pos, Vector2(PIXEL_SIZE, PIXEL_SIZE) * thickness_real), Color.WHITE)
+			draw_rect(Rect2(pos - Vector2(PIXEL_SIZE, PIXEL_SIZE) * thickness_real * 0.5, Vector2(PIXEL_SIZE, PIXEL_SIZE) * thickness_real), Color.WHITE)

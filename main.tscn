@@ -58,4 +58,5 @@ offset_top = -17.0
 texture = ExtResource("5_408cc")
 script = ExtResource("5_uu4gs")
 
+[connection signal="death" from="Player" to="." method="reset"]
 [connection signal="pressed" from="Button" to="." method="reset"]

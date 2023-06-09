@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+signal death
+
 @export var GROUND_SPEED := 400.0
 @export var AIR_SPEED := 400.0
 @export var JUMP_VELOCITY := 400.0
@@ -64,8 +66,8 @@ func _physics_process(delta):
 	# Now do grappling hook physics
 	if Input.is_action_just_pressed("grapple") and $GrappleRaycast.is_colliding():
 		grapple_state = GrappleState.ANIMATING_TO
-		$GrappleAnimationTimer.start()
 		grapple_position = $GrappleRaycast.get_collision_point()
+		$GrappleAnimationTimer.start()
 	elif Input.is_action_just_released("grapple") and not grapple_state == GrappleState.NOT_GRAPPLED:
 		grapple_state = GrappleState.ANIMATING_FROM
 		$GrappleAnimationTimer.start()
@@ -114,7 +116,7 @@ func reset(pos: Vector2):
 
 
 func _on_danger_body_entered(body):
-	reset(Vector2(0, -100))
+	death.emit()
 
 
 
