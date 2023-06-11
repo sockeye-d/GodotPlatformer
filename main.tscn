@@ -23,6 +23,9 @@ zoom = Vector2(5, 5)
 position_smoothing_speed = 10.0
 script = ExtResource("1_1d27x")
 
+[node name="ShakeTimer" type="Timer" parent="MainCamera"]
+one_shot = true
+
 [node name="Player" parent="." instance=ExtResource("1_gqxie")]
 process_priority = 1
 position = Vector2(0, -100)
@@ -58,5 +61,7 @@ offset_top = -17.0
 texture = ExtResource("5_408cc")
 script = ExtResource("5_uu4gs")
 
-[connection signal="death" from="Player" to="." method="reset"]
+[node name="RespawnTimer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="pressed" from="Button" to="." method="reset"]

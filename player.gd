@@ -115,9 +115,20 @@ func reset(pos: Vector2):
 	grapple_state = GrappleState.NOT_GRAPPLED
 
 
+func emit_death_particles():
+	var particles = $DeathParticles.duplicate()
+	particles.process_mode = Node.PROCESS_MODE_ALWAYS
+	particles.show()
+	particles.emitting = true
+	add_child(particles)
+	while true:
+		if not particles.emitting
+			particles.queue_free()
+			break
+		await get_tree().create_timer(0.5).timeout
+
 func _on_danger_body_entered(body):
 	death.emit()
-
 
 
 func _on_grapple_animation_timer_timeout() -> void:

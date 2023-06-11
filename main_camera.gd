@@ -1,6 +1,19 @@
 extends Camera2D
 
 var smooth_position: Vector2
+var shake_position: Vector2
+
+const _SQRT_2 = 1.4142135624
+const _SQRT_3 = 1.7320508076
+
+func shake(strength: float, speed: float, curve: float, time: float, interval: float):
+	$ShakeTimer.start(time)
+	while not $ShakeTimer.is_stopped():
+		var pos_mult = (1 - ease(1 - $ShakeTimer.time_left / time, curve)) * strength
+		var t = $ShakeTimer.time_left * speed
+		shake_position = Vector2(sin(t) + sin(_SQRT_2 * t), cos(t) + cos(_SQRT_3 * t)) * pos_mult
+		await get_tree().create_timer(interval).timeout
+	return
 
 func reset(pos: Vector2, threshold: float):
 	if position.distance_to(pos) > threshold:
@@ -18,5 +31,5 @@ func _ready():
 func _process(delta):
 	smooth_position.x = exp_damp(smooth_position.x, ($"../Player").position.x, 0.1, delta)
 	smooth_position.y = exp_damp(smooth_position.y, ($"../Player").position.y, 0.1, delta)
-	position = smooth_position
+	position = smooth_position + shake_position
 	

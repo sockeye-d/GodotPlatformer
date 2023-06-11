@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://c8gtqegyrncm0"]
+[gd_scene load_steps=26 format=3 uid="uid://c8gtqegyrncm0"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_cyj8s"]
 [ext_resource type="Script" path="res://grapple_raycast.gd" id="3_jmx57"]
@@ -16,6 +16,10 @@
 [ext_resource type="Texture2D" uid="uid://0fue4xammjpp" path="res://art/robot/walk/walk_0006.png" id="11_tqv5q"]
 [ext_resource type="Texture2D" uid="uid://cpbtilwwboc13" path="res://art/robot/walk/walk_0007.png" id="12_o3dti"]
 [ext_resource type="Script" path="res://Visual.gd" id="17_aeumv"]
+[ext_resource type="Texture2D" uid="uid://djucf2lk2vaik" path="res://art/misc/particles/death/death_0000.png" id="17_k33xj"]
+[ext_resource type="Texture2D" uid="uid://cnp0sa3xlbje5" path="res://art/misc/particles/death/death_0001.png" id="18_q83f2"]
+[ext_resource type="Texture2D" uid="uid://dnxvktmqc4tit" path="res://art/misc/particles/death/death_0002.png" id="19_5rbqu"]
+[ext_resource type="Texture2D" uid="uid://csmqwyxqac6gt" path="res://art/misc/particles/death/death_0003.png" id="20_eu6aj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5bf04"]
 size = Vector2(12.1212, 15)
@@ -69,12 +73,46 @@ animations = [{
 "speed": 8.0
 }]
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_60sm5"]
+particles_animation = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = true
+
+[sub_resource type="AnimatedTexture" id="AnimatedTexture_thqid"]
+frames = 4
+speed_scale = 10.0
+frame_0/texture = ExtResource("17_k33xj")
+frame_1/texture = ExtResource("18_q83f2")
+frame_1/duration = 1.0
+frame_2/texture = ExtResource("19_5rbqu")
+frame_2/duration = 1.0
+frame_3/texture = ExtResource("20_eu6aj")
+frame_3/duration = 1.0
+
+[sub_resource type="Gradient" id="Gradient_ou6tm"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.59596, 0.681818, 0.722222, 0.853535, 0.893939)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
+
 [node name="Player" type="CharacterBody2D"]
 slide_on_ceiling = false
 floor_stop_on_slope = false
 floor_block_on_wall = false
 floor_snap_length = 0.0
 script = ExtResource("1_cyj8s")
+GROUND_SPEED = null
+AIR_SPEED = null
+JUMP_VELOCITY = null
+GROUND_FRICTION = null
+AIR_FRICTION = null
+MOVE_WHEN_IN_AIR = null
+COYOTE_TIME = null
+GRAVITY_MULT = null
+GRAPPLE_STRENGTH = null
+VELOCITY_MULTIPLY = null
+SIZE = null
+MAX_VELOCITY = null
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 4
@@ -92,6 +130,7 @@ shape = SubResource("RectangleShape2D_5bf04")
 collision_mask = 2
 hit_from_inside = true
 script = ExtResource("3_jmx57")
+MAX_RAYCAST_DISTANCE = null
 
 [node name="Grapple" type="Line2D" parent="."]
 show_behind_parent = true
@@ -117,6 +156,31 @@ metadata/_edit_lock_ = true
 
 [node name="GrappleAnimationTimer" type="Timer" parent="."]
 wait_time = 0.1
+
+[node name="DeathParticles" type="CPUParticles2D" parent="."]
+texture_filter = 1
+material = SubResource("CanvasItemMaterial_60sm5")
+position = Vector2(8, 8)
+emitting = false
+amount = 20
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 1.0
+fixed_fps = 10
+fract_delta = false
+local_coords = true
+texture = SubResource("AnimatedTexture_thqid")
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 25.0
+initial_velocity_max = 50.0
+radial_accel_min = -100.0
+radial_accel_max = 100.0
+damping_min = 100.0
+damping_max = 100.0
+color_ramp = SubResource("Gradient_ou6tm")
+anim_speed_max = 1.0
+anim_offset_max = 1.0
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_danger_body_entered"]
 [connection signal="timeout" from="GrappleAnimationTimer" to="." method="_on_grapple_animation_timer_timeout"]

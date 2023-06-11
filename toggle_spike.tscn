@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c75x3daacugce"]
+[gd_scene load_steps=11 format=3 uid="uid://c75x3daacugce"]
 
 [ext_resource type="Script" path="res://toggle_spike.gd" id="1_jyi6w"]
 [ext_resource type="Texture2D" uid="uid://b4cs0qol1y6e6" path="res://art/tiles/spike/spike_0000.png" id="1_m2rim"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://dbyurbnh22pdv" path="res://art/tiles/spike/spike_0004.png" id="5_1n5b2"]
 [ext_resource type="Texture2D" uid="uid://dgl3q3d1ra305" path="res://art/tiles/spike/spike_0005.png" id="6_4qrig"]
 [ext_resource type="Texture2D" uid="uid://d02gan2ldu263" path="res://art/tiles/spike/spike_0006.png" id="7_2npiw"]
+[ext_resource type="Texture2D" uid="uid://db8vvt6ikglek" path="res://art/tiles/spike/spike_0007.png" id="8_3ixkh"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_0gbu1"]
 animations = [{
@@ -34,7 +35,7 @@ animations = [{
 "texture": ExtResource("7_2npiw")
 }, {
 "duration": 1.0,
-"texture": ExtResource("3_dhoja")
+"texture": ExtResource("8_3ixkh")
 }],
 "loop": true,
 "name": &"spike",
@@ -45,6 +46,7 @@ animations = [{
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_0gbu1")
 animation = &"spike"
+frame_progress = 0.839959
 script = ExtResource("1_jyi6w")
 metadata/_edit_group_ = true
 
