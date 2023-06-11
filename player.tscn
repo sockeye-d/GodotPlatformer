@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://c8gtqegyrncm0"]
+[gd_scene load_steps=28 format=3 uid="uid://c8gtqegyrncm0"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_cyj8s"]
 [ext_resource type="Script" path="res://grapple_raycast.gd" id="3_jmx57"]
@@ -73,13 +73,37 @@ animations = [{
 "speed": 8.0
 }]
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_60sm5"]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_5xsly"]
 particles_animation = true
 particles_anim_h_frames = 1
 particles_anim_v_frames = 1
 particles_anim_loop = true
 
-[sub_resource type="AnimatedTexture" id="AnimatedTexture_thqid"]
+[sub_resource type="Gradient" id="Gradient_ou6tm"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.484848, 0.540404, 0.59596, 0.651515, 0.722222, 0.853535, 0.893939)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_xb8gw"]
+gradient = SubResource("Gradient_ou6tm")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_66tht"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 25.0
+initial_velocity_max = 50.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+damping_min = 100.0
+damping_max = 100.0
+color_ramp = SubResource("GradientTexture1D_xb8gw")
+anim_speed_max = 1.0
+anim_offset_max = 1.0
+attractor_interaction_enabled = false
+
+[sub_resource type="AnimatedTexture" id="AnimatedTexture_x7i07"]
 frames = 4
 speed_scale = 10.0
 frame_0/texture = ExtResource("17_k33xj")
@@ -89,11 +113,6 @@ frame_2/texture = ExtResource("19_5rbqu")
 frame_2/duration = 1.0
 frame_3/texture = ExtResource("20_eu6aj")
 frame_3/duration = 1.0
-
-[sub_resource type="Gradient" id="Gradient_ou6tm"]
-interpolation_mode = 1
-offsets = PackedFloat32Array(0, 0.484848, 0.540404, 0.59596, 0.651515, 0.722222, 0.853535, 0.893939)
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
 
 [node name="Player" type="CharacterBody2D"]
 slide_on_ceiling = false
@@ -145,33 +164,21 @@ metadata/_edit_lock_ = true
 [node name="GrappleAnimationTimer" type="Timer" parent="."]
 wait_time = 0.1
 
-[node name="DeathParticles" type="CPUParticles2D" parent="."]
+[node name="DeathParticles" type="GPUParticles2D" parent="."]
 texture_filter = 1
-material = SubResource("CanvasItemMaterial_60sm5")
+material = SubResource("CanvasItemMaterial_5xsly")
 position = Vector2(8, 8)
 emitting = false
 amount = 20
+process_material = SubResource("ParticleProcessMaterial_66tht")
+texture = SubResource("AnimatedTexture_x7i07")
 lifetime = 0.6
 one_shot = true
 explosiveness = 0.4
-lifetime_randomness = 1.0
 fixed_fps = 10
+interpolate = false
 fract_delta = false
 local_coords = true
-texture = SubResource("AnimatedTexture_thqid")
-spread = 180.0
-gravity = Vector2(0, 0)
-initial_velocity_min = 25.0
-initial_velocity_max = 50.0
-radial_accel_min = -100.0
-radial_accel_max = 100.0
-damping_min = 100.0
-damping_max = 100.0
-color_ramp = SubResource("Gradient_ou6tm")
-hue_variation_min = -1.0
-hue_variation_max = 1.0
-anim_speed_max = 1.0
-anim_offset_max = 1.0
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_danger_body_entered"]
 [connection signal="timeout" from="GrappleAnimationTimer" to="." method="_on_grapple_animation_timer_timeout"]
