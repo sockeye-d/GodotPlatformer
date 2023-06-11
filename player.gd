@@ -122,7 +122,7 @@ func emit_death_particles():
 	particles.emitting = true
 	add_child(particles)
 	while true:
-		if not particles.emitting
+		if not particles.emitting:
 			particles.queue_free()
 			break
 		await get_tree().create_timer(0.5).timeout

@@ -92,8 +92,8 @@ frame_3/duration = 1.0
 
 [sub_resource type="Gradient" id="Gradient_ou6tm"]
 interpolation_mode = 1
-offsets = PackedFloat32Array(0, 0.59596, 0.681818, 0.722222, 0.853535, 0.893939)
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
+offsets = PackedFloat32Array(0, 0.484848, 0.540404, 0.59596, 0.651515, 0.722222, 0.853535, 0.893939)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
 
 [node name="Player" type="CharacterBody2D"]
 slide_on_ceiling = false
@@ -101,18 +101,6 @@ floor_stop_on_slope = false
 floor_block_on_wall = false
 floor_snap_length = 0.0
 script = ExtResource("1_cyj8s")
-GROUND_SPEED = null
-AIR_SPEED = null
-JUMP_VELOCITY = null
-GROUND_FRICTION = null
-AIR_FRICTION = null
-MOVE_WHEN_IN_AIR = null
-COYOTE_TIME = null
-GRAVITY_MULT = null
-GRAPPLE_STRENGTH = null
-VELOCITY_MULTIPLY = null
-SIZE = null
-MAX_VELOCITY = null
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 4
@@ -163,8 +151,9 @@ material = SubResource("CanvasItemMaterial_60sm5")
 position = Vector2(8, 8)
 emitting = false
 amount = 20
+lifetime = 0.6
 one_shot = true
-explosiveness = 1.0
+explosiveness = 0.4
 lifetime_randomness = 1.0
 fixed_fps = 10
 fract_delta = false
@@ -179,6 +168,8 @@ radial_accel_max = 100.0
 damping_min = 100.0
 damping_max = 100.0
 color_ramp = SubResource("Gradient_ou6tm")
+hue_variation_min = -1.0
+hue_variation_max = 1.0
 anim_speed_max = 1.0
 anim_offset_max = 1.0
 
