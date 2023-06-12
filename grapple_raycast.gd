@@ -15,9 +15,7 @@ func _ready():
 func _process(delta):
 	var player_size = $"..".SIZE
 	var player_position: Vector2 = $"..".position
-	if $"..".grapple_state == GrappleState.NOT_GRAPPLED:
-		target_position_absolute = get_global_mouse_position() - Vector2.ONE * player_size * 0.5
-		target_position = (target_position_absolute - player_position).normalized() * MAX_RAYCAST_DISTANCE
-		position = Vector2.ONE * player_size * 0.5
-	else:
-		target_position = (target_position_absolute - player_position).normalized() * MAX_RAYCAST_DISTANCE
+	target_position = (get_global_mouse_position() - Vector2.ONE * player_size * 0.5 - player_position).normalized() * MAX_RAYCAST_DISTANCE
+	position = Vector2.ONE * player_size * 0.5
+	
+	#$"../Label".text = str(get_collider_shape())

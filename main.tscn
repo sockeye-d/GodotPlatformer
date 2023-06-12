@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cxvqmr0gk5h2m"]
+[gd_scene load_steps=10 format=3 uid="uid://cxvqmr0gk5h2m"]
 
 [ext_resource type="Script" path="res://main_camera.gd" id="1_1d27x"]
 [ext_resource type="PackedScene" uid="uid://c8gtqegyrncm0" path="res://player.tscn" id="1_gqxie"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://ctb4ehxg8g1fg" path="res://level.tscn" id="4_dsbjt"]
 [ext_resource type="Texture2D" uid="uid://behn4du3h6s0x" path="res://art/misc/pointer.png" id="5_408cc"]
 [ext_resource type="Script" path="res://follow_mouse.gd" id="5_uu4gs"]
+[ext_resource type="AudioStream" uid="uid://r0vo0hlox2cx" path="res://sfx/death.wav" id="7_po44e"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_2on5k"]
 device = -1
@@ -22,11 +23,12 @@ script = ExtResource("1_wm4d5")
 zoom = Vector2(5, 5)
 position_smoothing_speed = 10.0
 script = ExtResource("1_1d27x")
+SMOOTHING = 0.01
 
 [node name="ShakeTimer" type="Timer" parent="MainCamera"]
 one_shot = true
 
-[node name="Player" parent="." instance=ExtResource("1_gqxie")]
+[node name="Player" parent="." node_paths=PackedStringArray("TILEMAP") instance=ExtResource("1_gqxie")]
 process_priority = 1
 position = Vector2(0, -100)
 GROUND_SPEED = 200.0
@@ -37,6 +39,7 @@ COYOTE_TIME = 0.1
 GRAVITY_MULT = 0.5
 GRAPPLE_STRENGTH = 2000.0
 MAX_VELOCITY = 800.0
+TILEMAP = NodePath("../Level")
 
 [node name="Level" parent="." instance=ExtResource("4_dsbjt")]
 
@@ -63,6 +66,9 @@ script = ExtResource("5_uu4gs")
 
 [node name="RespawnTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="DeathAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_po44e")
 
 [connection signal="death" from="Player" to="." method="reset"]
 [connection signal="pressed" from="Button" to="." method="reset"]

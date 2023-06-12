@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://c8gtqegyrncm0"]
+[gd_scene load_steps=30 format=3 uid="uid://c8gtqegyrncm0"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_cyj8s"]
 [ext_resource type="Script" path="res://grapple_raycast.gd" id="3_jmx57"]
@@ -93,7 +93,7 @@ particle_flag_disable_z = true
 spread = 180.0
 gravity = Vector3(0, 0, 0)
 initial_velocity_min = 25.0
-initial_velocity_max = 50.0
+initial_velocity_max = 100.0
 orbit_velocity_min = 0.0
 orbit_velocity_max = 0.0
 damping_min = 100.0
@@ -113,6 +113,20 @@ frame_2/texture = ExtResource("19_5rbqu")
 frame_2/duration = 1.0
 frame_3/texture = ExtResource("20_eu6aj")
 frame_3/duration = 1.0
+
+[sub_resource type="SystemFont" id="SystemFont_7ovjr"]
+font_names = PackedStringArray("Monospace")
+subpixel_positioning = 3
+oversampling = 10.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_81bjk"]
+font = SubResource("SystemFont_7ovjr")
+font_size = 3
+outline_size = 1
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 2
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(0, 0.5)
 
 [node name="Player" type="CharacterBody2D"]
 slide_on_ceiling = false
@@ -134,12 +148,10 @@ position = Vector2(8, 8)
 shape = SubResource("RectangleShape2D_5bf04")
 
 [node name="GrappleRaycast" type="RayCast2D" parent="."]
-collision_mask = 2
-hit_from_inside = true
+collision_mask = 3
 script = ExtResource("3_jmx57")
-MAX_RAYCAST_DISTANCE = null
 
-[node name="Grapple" type="Line2D" parent="."]
+[node name="Grapple" type="Line2D" parent="." node_paths=PackedStringArray("RAYCAST")]
 show_behind_parent = true
 width = 1.0
 joint_mode = 2
@@ -150,14 +162,14 @@ antialiased = true
 script = ExtResource("4_jjudc")
 PIXEL_SIZE = 1
 STRETCH = 0.001
+RAYCAST = NodePath("../GrappleRaycast")
 
 [node name="Visual" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 position = Vector2(8, 7.5)
 sprite_frames = SubResource("SpriteFrames_xbrf4")
 animation = &"walk"
-frame = 5
-frame_progress = 0.16948
+frame_progress = 0.0714023
 script = ExtResource("17_aeumv")
 metadata/_edit_lock_ = true
 
@@ -165,6 +177,7 @@ metadata/_edit_lock_ = true
 wait_time = 0.1
 
 [node name="DeathParticles" type="GPUParticles2D" parent="."]
+z_index = 3
 texture_filter = 1
 material = SubResource("CanvasItemMaterial_5xsly")
 position = Vector2(8, 8)
@@ -179,6 +192,18 @@ fixed_fps = 10
 interpolate = false
 fract_delta = false
 local_coords = true
+
+[node name="Label" type="Label" parent="."]
+z_index = 6
+offset_left = -9.0
+offset_top = -10.0
+offset_right = 26.0
+offset_bottom = 40.0
+pivot_offset = Vector2(18, 11.5)
+text = "aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+label_settings = SubResource("LabelSettings_81bjk")
+horizontal_alignment = 1
+autowrap_mode = 1
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_danger_body_entered"]
 [connection signal="timeout" from="GrappleAnimationTimer" to="." method="_on_grapple_animation_timer_timeout"]

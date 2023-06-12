@@ -6,6 +6,7 @@ func reset():
 	$Player.call_deferred("set_process_mode", PROCESS_MODE_DISABLED)
 	$Player/Visual.hide()
 	$MainCamera.shake(2.0, 200.0, 0.2, $RespawnTimer.wait_time, 0.01)
+	$DeathAudio.play()
 	
 	$RespawnTimer.start()
 	await $RespawnTimer.timeout

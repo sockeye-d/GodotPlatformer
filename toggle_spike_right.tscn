@@ -1,0 +1,59 @@
+[gd_scene load_steps=11 format=3 uid="uid://1dmwen6r8re7"]
+
+[ext_resource type="Texture2D" uid="uid://dhnw7vnpf2ybm" path="res://art/tiles/spike/left/spike_left_0000.png" id="1_27jgv"]
+[ext_resource type="Texture2D" uid="uid://cico50824fogt" path="res://art/tiles/spike/left/spike_left_0001.png" id="2_4xjd4"]
+[ext_resource type="Texture2D" uid="uid://dgyoacvv7nkpe" path="res://art/tiles/spike/left/spike_left_0002.png" id="3_br2xq"]
+[ext_resource type="Texture2D" uid="uid://c1yjqxi4blx7u" path="res://art/tiles/spike/left/spike_left_0003.png" id="4_mmfij"]
+[ext_resource type="Texture2D" uid="uid://cglvgbyqgpdnp" path="res://art/tiles/spike/left/spike_left_0004.png" id="5_7ho8l"]
+[ext_resource type="Texture2D" uid="uid://du1gtwsalpi16" path="res://art/tiles/spike/left/spike_left_0005.png" id="6_w0eb6"]
+[ext_resource type="Texture2D" uid="uid://dgjmnu41yhnbs" path="res://art/tiles/spike/left/spike_left_0006.png" id="7_nj5p8"]
+[ext_resource type="Texture2D" uid="uid://bm8r0p3i70hly" path="res://art/tiles/spike/left/spike_left_0007.png" id="8_rkh64"]
+[ext_resource type="Script" path="res://toggle_spike.gd" id="9_lxt1d"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0gbu1"]
+animations = [{
+"frames": [{
+"duration": 15.0,
+"texture": ExtResource("1_27jgv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_4xjd4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_br2xq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_mmfij")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_7ho8l")
+}, {
+"duration": 10.0,
+"texture": ExtResource("6_w0eb6")
+}, {
+"duration": 5.0,
+"texture": ExtResource("7_nj5p8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_rkh64")
+}],
+"loop": true,
+"name": &"spike",
+"speed": 10.0
+}]
+
+[node name="ToggleSpikeLeft" type="AnimatedSprite2D"]
+texture_filter = 1
+position = Vector2(8, 0)
+sprite_frames = SubResource("SpriteFrames_0gbu1")
+animation = &"spike"
+script = ExtResource("9_lxt1d")
+metadata/_edit_group_ = true
+
+[node name="Danger" type="StaticBody2D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="Collision" type="CollisionPolygon2D" parent="Danger"]
+position = Vector2(0, 4)
+polygon = PackedVector2Array(-8, 4, 0, 4, -4, -4)
