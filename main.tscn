@@ -3,18 +3,18 @@
 [ext_resource type="Script" path="res://main_camera.gd" id="1_1d27x"]
 [ext_resource type="PackedScene" uid="uid://c8gtqegyrncm0" path="res://player.tscn" id="1_gqxie"]
 [ext_resource type="Script" path="res://main.gd" id="1_wm4d5"]
-[ext_resource type="PackedScene" uid="uid://ctb4ehxg8g1fg" path="res://level.tscn" id="4_dsbjt"]
+[ext_resource type="PackedScene" uid="uid://8r3dv514hsux" path="res://level.tscn" id="4_dsbjt"]
 [ext_resource type="Texture2D" uid="uid://behn4du3h6s0x" path="res://art/misc/pointer.png" id="5_408cc"]
-[ext_resource type="Script" path="res://follow_mouse.gd" id="5_uu4gs"]
+[ext_resource type="Script" path="res://cursor.gd" id="5_ko1lv"]
 [ext_resource type="AudioStream" uid="uid://r0vo0hlox2cx" path="res://sfx/death.wav" id="7_po44e"]
 
-[sub_resource type="InputEventKey" id="InputEventKey_2on5k"]
+[sub_resource type="InputEventKey" id="InputEventKey_0rrom"]
 device = -1
 keycode = 82
 unicode = 114
 
-[sub_resource type="Shortcut" id="Shortcut_rws5y"]
-events = [SubResource("InputEventKey_2on5k")]
+[sub_resource type="Shortcut" id="Shortcut_aoedq"]
+events = [SubResource("InputEventKey_0rrom")]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_wm4d5")
@@ -23,7 +23,7 @@ script = ExtResource("1_wm4d5")
 zoom = Vector2(5, 5)
 position_smoothing_speed = 10.0
 script = ExtResource("1_1d27x")
-SMOOTHING = 0.01
+SMOOTHING = 0.001
 
 [node name="ShakeTimer" type="Timer" parent="MainCamera"]
 one_shot = true
@@ -41,34 +41,28 @@ GRAPPLE_STRENGTH = 2000.0
 MAX_VELOCITY = 800.0
 TILEMAP = NodePath("../Level")
 
-[node name="Level" parent="." instance=ExtResource("4_dsbjt")]
-
-[node name="Button" type="Button" parent="."]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -986.0
-offset_top = -53.0
-offset_right = -978.0
-offset_bottom = -45.0
-grow_horizontal = 2
-scale = Vector2(1e-05, 1e-05)
-size_flags_horizontal = 6
-size_flags_vertical = 2
-shortcut = SubResource("Shortcut_rws5y")
-
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="Cursor" type="TextureRect" parent="."]
+z_index = 64
 texture_filter = 1
 offset_left = -17.0
 offset_top = -17.0
 texture = ExtResource("5_408cc")
-script = ExtResource("5_uu4gs")
+script = ExtResource("5_ko1lv")
 
 [node name="RespawnTimer" type="Timer" parent="."]
 one_shot = true
 
 [node name="DeathAudio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("7_po44e")
+
+[node name="Level" parent="." instance=ExtResource("4_dsbjt")]
+
+[node name="Button" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+scale = Vector2(1e-05, 1e-05)
+shortcut = SubResource("Shortcut_aoedq")
+flat = true
 
 [connection signal="death" from="Player" to="." method="reset"]
 [connection signal="pressed" from="Button" to="." method="reset"]

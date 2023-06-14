@@ -194,6 +194,7 @@ fract_delta = false
 local_coords = true
 
 [node name="Label" type="Label" parent="."]
+visible = false
 z_index = 6
 offset_left = -9.0
 offset_top = -10.0
