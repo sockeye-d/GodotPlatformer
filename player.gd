@@ -15,6 +15,7 @@ signal death
 @export var SIZE := 16
 @export var MAX_VELOCITY := 1000.0
 @export var TILEMAP: TileMap
+@export var REPOSITION_GRAPPLE := true
 
 enum GrappleState {
 	NOT_GRAPPLED,
@@ -91,7 +92,7 @@ func _physics_process(delta):
 	
 		$GrappleAnimationTimer.start()
 	
-	if grapple_is_colliding and not grapple_centered:
+	if grapple_is_colliding and not grapple_centered and REPOSITION_GRAPPLE:
 		if $GrappleRaycast.get_collision_point().distance_squared_to(position) < grapple_position.distance_squared_to(position):
 			grapple_position = $GrappleRaycast.get_collision_point()
 

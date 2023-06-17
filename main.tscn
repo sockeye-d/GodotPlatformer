@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cxvqmr0gk5h2m"]
+[gd_scene load_steps=11 format=3 uid="uid://cxvqmr0gk5h2m"]
 
 [ext_resource type="Script" path="res://main_camera.gd" id="1_1d27x"]
 [ext_resource type="PackedScene" uid="uid://c8gtqegyrncm0" path="res://player.tscn" id="1_gqxie"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://behn4du3h6s0x" path="res://art/misc/pointer.png" id="5_408cc"]
 [ext_resource type="Script" path="res://cursor.gd" id="5_ko1lv"]
 [ext_resource type="AudioStream" uid="uid://r0vo0hlox2cx" path="res://sfx/death.wav" id="7_po44e"]
+[ext_resource type="PackedScene" uid="uid://bor1n53yyqky1" path="res://parallax_background.tscn" id="8_s3s5w"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_0rrom"]
 device = -1
@@ -40,6 +41,7 @@ GRAVITY_MULT = 0.5
 GRAPPLE_STRENGTH = 2000.0
 MAX_VELOCITY = 800.0
 TILEMAP = NodePath("../Level")
+REPOSITION_GRAPPLE = false
 
 [node name="Cursor" type="TextureRect" parent="."]
 z_index = 64
@@ -63,6 +65,8 @@ offset_bottom = 8.0
 scale = Vector2(1e-05, 1e-05)
 shortcut = SubResource("Shortcut_aoedq")
 flat = true
+
+[node name="ParallaxBackground" parent="." instance=ExtResource("8_s3s5w")]
 
 [connection signal="death" from="Player" to="." method="reset"]
 [connection signal="pressed" from="Button" to="." method="reset"]
