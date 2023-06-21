@@ -160,7 +160,7 @@ end_cap_mode = 2
 round_precision = 4
 antialiased = true
 script = ExtResource("4_jjudc")
-PIXEL_SIZE = 1
+PIXEL_SIZE = 1.0
 STRETCH = 0.001
 RAYCAST = NodePath("../GrappleRaycast")
 

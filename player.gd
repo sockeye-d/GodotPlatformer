@@ -30,8 +30,7 @@ var jumped := false
 var grapple_state := GrappleState.NOT_GRAPPLED
 var grapple_centered := false
 var grapple_position := Vector2.ZERO
-
-var grapple_query: PhysicsRayQueryParameters2D
+var grapple_hit := false
 
 var frame_aligned_position: Vector2 = Vector2.ZERO
 
@@ -74,25 +73,28 @@ func _physics_process(delta):
 	if $GrappleRaycast.is_colliding():
 		grapple_collision_coords = TILEMAP.get_coords_for_body_rid($GrappleRaycast.get_collider_rid())
 	var grapple_collision_tile_data := TILEMAP.get_cell_tile_data(1, grapple_collision_coords)
-	var grapple_is_colliding := false
-	grapple_is_colliding = $GrappleRaycast.is_colliding() and grapple_collision_tile_data.get_custom_data("grappleable")
+	grapple_hit = $GrappleRaycast.is_colliding() and grapple_collision_tile_data.get_custom_data("grappleable")
 
-	if Input.is_action_just_pressed("grapple") and grapple_is_colliding:
-		grapple_state = GrappleState.ANIMATING_TO
-		if grapple_collision_tile_data.get_custom_data("snap_to_center"):
+	if Input.is_action_just_pressed("grapple") and grapple_hit:
+		grapple_position = $GrappleRaycast.get_collision_point()
+		grapple_centered = false
+		if grapple_collision_tile_data.get_custom_data("snap_to_center_x"):
+			print("snapped x")
 			grapple_centered = true
-			grapple_position = Vector2(grapple_collision_coords * tile_size) + Vector2(tile_size) * 0.5
-		else:
-			grapple_centered = false
-			grapple_position = $GrappleRaycast.get_collision_point()
+			grapple_position.x = (Vector2(grapple_collision_coords * tile_size) + Vector2(tile_size) * 0.5).x
+		if grapple_collision_tile_data.get_custom_data("snap_to_center_y"):
+			print("snapped y")
+			grapple_centered = true
+			grapple_position.y = (Vector2(grapple_collision_coords * tile_size) + Vector2(tile_size) * 0.5).y
 		
+		grapple_state = GrappleState.ANIMATING_TO
 		$GrappleAnimationTimer.start()
 	elif Input.is_action_just_released("grapple") and not grapple_state == GrappleState.NOT_GRAPPLED:
-		grapple_state = GrappleState.ANIMATING_FROM
 	
+		grapple_state = GrappleState.ANIMATING_FROM
 		$GrappleAnimationTimer.start()
 	
-	if grapple_is_colliding and not grapple_centered and REPOSITION_GRAPPLE:
+	if grapple_hit and not grapple_centered and REPOSITION_GRAPPLE:
 		if $GrappleRaycast.get_collision_point().distance_squared_to(position) < grapple_position.distance_squared_to(position):
 			grapple_position = $GrappleRaycast.get_collision_point()
 

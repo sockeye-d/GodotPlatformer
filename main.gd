@@ -22,5 +22,5 @@ func _ready():
 
 
 func _process(delta):
-	pass
+	$Cursor.material.set_shader_parameter("HUE", 0.3 if $Player.grapple_hit else 0.0)
 

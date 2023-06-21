@@ -1,13 +1,18 @@
-[gd_scene load_steps=11 format=3 uid="uid://cxvqmr0gk5h2m"]
+[gd_scene load_steps=13 format=3 uid="uid://cxvqmr0gk5h2m"]
 
 [ext_resource type="Script" path="res://main_camera.gd" id="1_1d27x"]
 [ext_resource type="PackedScene" uid="uid://c8gtqegyrncm0" path="res://player.tscn" id="1_gqxie"]
 [ext_resource type="Script" path="res://main.gd" id="1_wm4d5"]
+[ext_resource type="Shader" uid="uid://bbg17br7pyag4" path="res://main.tres" id="4_0vqre"]
 [ext_resource type="PackedScene" uid="uid://8r3dv514hsux" path="res://level.tscn" id="4_dsbjt"]
 [ext_resource type="Texture2D" uid="uid://behn4du3h6s0x" path="res://art/misc/pointer.png" id="5_408cc"]
 [ext_resource type="Script" path="res://cursor.gd" id="5_ko1lv"]
 [ext_resource type="AudioStream" uid="uid://r0vo0hlox2cx" path="res://sfx/death.wav" id="7_po44e"]
 [ext_resource type="PackedScene" uid="uid://bor1n53yyqky1" path="res://parallax_background.tscn" id="8_s3s5w"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1vrqi"]
+shader = ExtResource("4_0vqre")
+shader_parameter/HUE = null
 
 [sub_resource type="InputEventKey" id="InputEventKey_0rrom"]
 device = -1
@@ -21,7 +26,7 @@ events = [SubResource("InputEventKey_0rrom")]
 script = ExtResource("1_wm4d5")
 
 [node name="MainCamera" type="Camera2D" parent="."]
-zoom = Vector2(5, 5)
+zoom = Vector2(4, 4)
 position_smoothing_speed = 10.0
 script = ExtResource("1_1d27x")
 SMOOTHING = 0.001
@@ -46,6 +51,7 @@ REPOSITION_GRAPPLE = false
 [node name="Cursor" type="TextureRect" parent="."]
 z_index = 64
 texture_filter = 1
+material = SubResource("ShaderMaterial_1vrqi")
 offset_left = -17.0
 offset_top = -17.0
 texture = ExtResource("5_408cc")
