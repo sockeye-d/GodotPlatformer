@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://ng4u7s8q8j31"]
+
+[ext_resource type="Script" path="res://circle.gd" id="1_acvqd"]
+
+[node name="Circle" type="Node2D"]
+script = ExtResource("1_acvqd")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(10, 10)
